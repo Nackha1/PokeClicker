@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokeclicker/classes/pokemon.dart';
 import 'package:pokeclicker/classes/typeColors.dart';
 import 'package:pokeclicker/colors.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Details extends StatefulWidget {
   Details({Key key, this.pokemon}) : super(key: key);
@@ -31,11 +32,11 @@ class _DetailsState extends State<Details> {
       appBar: AppBar(
         title: Text(
           pokemon.name,
-          style: Theme.of(context).textTheme.title,
+          style: Theme.of(context).textTheme.title.copyWith(
+                color: colors.normal,
+              ),
         ),
         centerTitle: true,
-        //brightness: Brightness.light,
-        //backgroundColor: Colors.white,
         elevation: 0.0,
         iconTheme: Theme.of(context).iconTheme.copyWith(
               color: colors.normal,
@@ -55,9 +56,23 @@ class _DetailsState extends State<Details> {
               child: Center(
                 child: Hero(
                   tag: pokemon.name,
-                  child: Image.asset(
-                    'assets/front/${pokemon.name.toLowerCase().replaceAll(' ', '_')}.gif',
-                    width: 200,
+                  /* Important for back compatibility */
+                  // child: Image.asset(
+                  //   'assets/front/${pokemon.name.toLowerCase().replaceAll(' ', '_')}.gif',
+                  //   width: 200,
+                  //   fit: BoxFit.contain,
+                  // ),
+                  child: CachedNetworkImage(
+                    placeholder: (context, url) => CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(colors.normal),
+                    ),
+                    errorWidget: (context, url, error) => Icon(
+                      Icons.error,
+                      color: Colors.red,
+                    ),
+                    imageUrl:
+                        'https://raw.githubusercontent.com/Nackha1/Hd-sprites/master/${pokemon.name.replaceAll(' ', '_')}.gif',
+                    width: 300,
                     fit: BoxFit.contain,
                   ),
                 ),

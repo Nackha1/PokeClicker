@@ -58,7 +58,7 @@ Widget buildPokemonTile(BuildContext context, Pokemon pokemon) {
                       pokemon.name,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 22,
+                        fontSize: 20,
                         color: Colors.black87,
                       ),
                     ),

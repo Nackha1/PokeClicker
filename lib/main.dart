@@ -95,17 +95,21 @@ class _MyHomePageState extends State<MyHomePage> {
           style: Theme.of(context).textTheme.title,
         ),
         centerTitle: true,
-        //brightness: Brightness.light,
-        //backgroundColor: Colors.white,
       ),
       body: pokedex.isEmpty
           ? Center(
               child: CircularProgressIndicator(),
             )
           : DraggableScrollbar.rrect(
-              labelTextBuilder: (double offset) {
-                return Text("$offset");
-              },
+              // labelTextBuilder: (offset) {
+              //   final int currentItem = myScrollController.hasClients
+              //       ? (myScrollController.offset /
+              //               myScrollController.position.maxScrollExtent *
+              //               pokedex.length)
+              //           .floor()
+              //       : 0;
+              //   return Text("$currentItem");
+              // },
               controller: myScrollController,
               child: GridView.builder(
                 controller: myScrollController,
