@@ -101,17 +101,9 @@ class _MyHomePageState extends State<MyHomePage> {
               child: CircularProgressIndicator(),
             )
           : DraggableScrollbar.rrect(
-              // labelTextBuilder: (offset) {
-              //   final int currentItem = myScrollController.hasClients
-              //       ? (myScrollController.offset /
-              //               myScrollController.position.maxScrollExtent *
-              //               pokedex.length)
-              //           .floor()
-              //       : 0;
-              //   return Text("$currentItem");
-              // },
               controller: myScrollController,
               child: GridView.builder(
+                padding: const EdgeInsets.all(4.0),
                 controller: myScrollController,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2),

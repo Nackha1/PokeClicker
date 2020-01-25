@@ -5,17 +5,17 @@ import 'package:pokeclicker/colors.dart';
 import 'package:pokeclicker/pages/details.dart';
 
 Widget buildPokemonTile(BuildContext context, Pokemon pokemon) {
-  TypeColors colors = pokemonTypeColor[pokemon.type[0]];
+  TypeColors _pokeColors = pokemonTypeColor[pokemon.type[0]];
   return Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding: const EdgeInsets.all(4.0),
     child: Material(
       type: MaterialType.card,
       elevation: 1,
-      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      borderRadius: BorderRadius.all(Radius.circular(16.0)),
       clipBehavior: Clip.antiAlias,
-      color: colors.light,
+      color: _pokeColors.light,
       child: InkWell(
-        splashColor: colors.normal,
+        splashColor: _pokeColors.normal,
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (BuildContext context) => Details(
@@ -32,9 +32,10 @@ Widget buildPokemonTile(BuildContext context, Pokemon pokemon) {
                 child: Text(
                   '#${pokemon.id.toString().padLeft(3, '0')}',
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 28,
-                      color: Colors.black26),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 28,
+                    color: Colors.black38,
+                  ),
                 ),
               ),
               Column(
@@ -59,7 +60,8 @@ Widget buildPokemonTile(BuildContext context, Pokemon pokemon) {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        color: Colors.black87,
+                        color: Colors.black54,
+                        //color: _pokeColors.dark,
                       ),
                     ),
                   ),
