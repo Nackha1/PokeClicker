@@ -21,6 +21,7 @@ dependencies:
     sdk: flutter
   draggable_scrollbar: ^0.0.4
   cached_network_image: ^2.0.0
+  shared_preferences: ^0.5.6+1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

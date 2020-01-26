@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokeclicker/classes/pokemon.dart';
 import 'package:pokeclicker/classes/typeColors.dart';
-import 'package:pokeclicker/colors.dart';
+import 'package:pokeclicker/globals.dart';
 import 'package:pokeclicker/pages/details.dart';
 
 Widget buildPokemonTile(BuildContext context, Pokemon pokemon) {
@@ -17,10 +17,13 @@ Widget buildPokemonTile(BuildContext context, Pokemon pokemon) {
       child: InkWell(
         splashColor: _pokeColors.normal,
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
+          Navigator.of(context).push(
+            MaterialPageRoute(
               builder: (BuildContext context) => DetailsPage(
-                    pokemon: pokemon,
-                  )));
+                pokemon: pokemon,
+              ),
+            ),
+          );
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),

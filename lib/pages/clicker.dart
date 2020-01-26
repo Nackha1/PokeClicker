@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokeclicker/classes/coinsManager.dart';
 
 class ClickerPage extends StatefulWidget {
   @override
@@ -7,11 +8,11 @@ class ClickerPage extends StatefulWidget {
 
 class _ClickerPageState extends State<ClickerPage>
     with SingleTickerProviderStateMixin {
-  int _coins = 0;
-  int _multiplier = 1;
-
   Animation _animation;
   AnimationController _animationController;
+
+  int coins = 0;
+  int multiplier = 0;
 
   @override
   void initState() {
@@ -29,20 +30,19 @@ class _ClickerPageState extends State<ClickerPage>
       curve: Curves.ease,
     );
     _animation = Tween(begin: 0.95, end: 0.85).animate(_animation);
+
+    _initialize();
   }
 
-  void _tap() {
-    setState(() {
-      _coins += _multiplier;
-      _animationController.reset();
-      _animationController.forward();
-    });
+  void _initialize() async {
+    await CoinsManager.initialize();
+    setState(() {});
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _animationController.dispose();
+  void _incrementCounter() async {
+    CoinsManager.incrementCoinsByMultiplier();
+    _animationController.reset();
+    _animationController.forward();
   }
 
   @override
@@ -51,12 +51,19 @@ class _ClickerPageState extends State<ClickerPage>
       appBar: AppBar(
         title: Text('PokeClicker'),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/settings');
+            },
+            icon: Icon(Icons.settings),
+          )
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Expanded(
-            //flex: 10,
             child: Container(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -67,7 +74,7 @@ class _ClickerPageState extends State<ClickerPage>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          '$_coins',
+                          '${CoinsManager.coins}',
                           style: TextStyle(
                             fontSize: 32,
                           ),
@@ -82,7 +89,7 @@ class _ClickerPageState extends State<ClickerPage>
                   Expanded(
                     flex: 3,
                     child: GestureDetector(
-                      onTap: _tap,
+                      onTap: _incrementCounter,
                       child: Transform.scale(
                         scale: _animation.value,
                         child: Image.asset(
@@ -110,12 +117,14 @@ class _ClickerPageState extends State<ClickerPage>
                     onTap: () {
                       Navigator.pushNamed(context, '/shop');
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.shopping_cart,
-                        color: Colors.white70,
-                        size: 32,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.shopping_cart,
+                          color: Colors.white70,
+                          size: 32,
+                        ),
                       ),
                     ),
                   ),
@@ -123,7 +132,14 @@ class _ClickerPageState extends State<ClickerPage>
               ),
               Expanded(
                 flex: 5,
-                child: Container(),
+                child: Container(
+                  child: Center(
+                    child: Text(
+                      '+${CoinsManager.multiplier}',
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                  ),
+                ),
               ),
               Expanded(
                 flex: 2,
@@ -138,12 +154,14 @@ class _ClickerPageState extends State<ClickerPage>
                     onTap: () {
                       Navigator.pushNamed(context, '/pokedex');
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.list,
-                        color: Colors.white70,
-                        size: 32,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.menu,
+                          color: Colors.white70,
+                          size: 32,
+                        ),
                       ),
                     ),
                   ),

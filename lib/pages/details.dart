@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pokeclicker/classes/pokemon.dart';
 import 'package:pokeclicker/classes/typeColors.dart';
-import 'package:pokeclicker/colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:pokeclicker/globals.dart';
 
 class DetailsPage extends StatefulWidget {
   DetailsPage({Key key, this.pokemon}) : super(key: key);

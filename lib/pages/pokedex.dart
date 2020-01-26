@@ -26,18 +26,6 @@ class _PokedexPageState extends State<PokedexPage> {
     fetchData();
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   pokedex.forEach((item) {
-  //     precacheImage(
-  //         AssetImage(
-  //             'assets/front/${item.name.toLowerCase().replaceAll(' ', '_')}.gif'),
-  //         context);
-  //   });
-
-  //   super.didChangeDependencies();
-  // }
-
   fetchData() async {
     String encodedData =
         await DefaultAssetBundle.of(context).loadString("assets/pokedex.json");
@@ -69,6 +57,13 @@ class _PokedexPageState extends State<PokedexPage> {
           style: Theme.of(context).textTheme.title,
         ),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            onPressed: _sort,
+            tooltip: 'Increment',
+            icon: Icon(_isSortedAlpha ? Icons.sort : Icons.sort_by_alpha),
+          )
+        ],
       ),
       body: pokedex.isEmpty
           ? Center(
@@ -87,11 +82,6 @@ class _PokedexPageState extends State<PokedexPage> {
                 },
               ),
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _sort,
-        tooltip: 'Increment',
-        child: Icon(_isSortedAlpha ? Icons.sort : Icons.sort_by_alpha),
-      ),
     );
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pokeclicker/classes/coinsManager.dart';
 import 'package:pokeclicker/pages/clicker.dart';
 import 'package:pokeclicker/pages/pokedex.dart';
+import 'package:pokeclicker/pages/settings.dart';
 import 'package:pokeclicker/pages/shop.dart';
 
 void main() => runApp(MyApp());
@@ -24,6 +26,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => ClickerPage(),
         '/pokedex': (context) => PokedexPage(),
         '/shop': (context) => ShopPage(),
+        '/settings': (context) => SettingsPage(),
       },
       debugShowCheckedModeBanner: false,
     );
