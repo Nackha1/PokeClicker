@@ -4,16 +4,16 @@ import 'package:pokeclicker/classes/typeColors.dart';
 import 'package:pokeclicker/colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class Details extends StatefulWidget {
-  Details({Key key, this.pokemon}) : super(key: key);
+class DetailsPage extends StatefulWidget {
+  DetailsPage({Key key, this.pokemon}) : super(key: key);
 
   final Pokemon pokemon;
 
   @override
-  _DetailsState createState() => _DetailsState();
+  _DetailsPageState createState() => _DetailsPageState();
 }
 
-class _DetailsState extends State<Details> {
+class _DetailsPageState extends State<DetailsPage> {
   Pokemon _pokemon;
   TypeColors _pokeColors;
 

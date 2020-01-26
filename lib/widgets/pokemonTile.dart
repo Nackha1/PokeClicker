@@ -18,7 +18,7 @@ Widget buildPokemonTile(BuildContext context, Pokemon pokemon) {
         splashColor: _pokeColors.normal,
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => Details(
+              builder: (BuildContext context) => DetailsPage(
                     pokemon: pokemon,
                   )));
         },
