@@ -41,7 +41,7 @@ class ShopItem extends StatelessWidget {
                           color: color.computeLuminance() > 0.5
                               ? Colors.black54
                               : Colors.white70,
-                          fontSize: 40,
+                          fontSize: 32,
                         ),
                       ),
                     ],

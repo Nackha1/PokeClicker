@@ -53,7 +53,6 @@ class _ClickerPageState extends State<ClickerPage>
     _animationController.forward();
     setState(() {
       _pokeballLife += _power;
-      print(_pokeballLife);
       if (_pokeballLife >= 100) {
         CoinsManager.incrementCoinsByMultiplier();
         _pokeballLife = 0;
