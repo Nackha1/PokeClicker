@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:pokeclicker/classes/coinsManager.dart';
+import 'package:pokeclicker/globals.dart';
 
 class ClickerPage extends StatefulWidget {
   @override
@@ -11,14 +14,20 @@ class _ClickerPageState extends State<ClickerPage>
   Animation _animation;
   AnimationController _animationController;
 
-  int coins = 0;
-  int multiplier = 0;
+  int _pokeballLife;
+  int _power;
+  Color _backgroundColor;
 
   @override
   void initState() {
     super.initState();
 
+    _pokeballLife = 0;
+    _power = 10;
+    _backgroundColor = _randomColor();
+
     _animationController = AnimationController(
+      value: 0.95,
       vsync: this,
       duration: Duration(milliseconds: 250),
     );
@@ -39,15 +48,28 @@ class _ClickerPageState extends State<ClickerPage>
     setState(() {});
   }
 
-  void _incrementCounter() async {
-    CoinsManager.incrementCoinsByMultiplier();
+  void _onTap() {
     _animationController.reset();
     _animationController.forward();
+    setState(() {
+      _pokeballLife += _power;
+      print(_pokeballLife);
+      if (_pokeballLife >= 100) {
+        CoinsManager.incrementCoinsByMultiplier();
+        _pokeballLife = 0;
+        _backgroundColor = _randomColor();
+      }
+    });
   }
+
+  Color _randomColor() => pokemonTypeColor[pokemonTypeColor.keys
+          .elementAt(new Random().nextInt(pokemonTypeColor.length))]
+      .light;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //backgroundColor: _backgroundColor,
       appBar: AppBar(
         title: Text('PokeClicker'),
         centerTitle: true,
@@ -63,6 +85,9 @@ class _ClickerPageState extends State<ClickerPage>
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
+          LinearProgressIndicator(
+            value: (_pokeballLife / 100),
+          ),
           Expanded(
             child: Container(
               child: Column(
@@ -76,25 +101,25 @@ class _ClickerPageState extends State<ClickerPage>
                         Text(
                           '${CoinsManager.coins}',
                           style: TextStyle(
-                            fontSize: 32,
+                            fontSize: 64,
                           ),
                         ),
-                        Icon(
-                          Icons.attach_money,
-                          size: 32,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                        ),
+                        Image.asset(
+                          'assets/pokecoin_front.png',
+                          width: 64,
                         ),
                       ],
                     ),
                   ),
-                  Expanded(
-                    flex: 3,
-                    child: GestureDetector(
-                      onTap: _incrementCounter,
-                      child: Transform.scale(
-                        scale: _animation.value,
-                        child: Image.asset(
-                          'assets/pokeball.png',
-                        ),
+                  GestureDetector(
+                    onTap: _onTap,
+                    child: Transform.scale(
+                      scale: _animation.value,
+                      child: Image.asset(
+                        'assets/pokeball3.png',
                       ),
                     ),
                   ),

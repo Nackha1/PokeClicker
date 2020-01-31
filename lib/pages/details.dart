@@ -3,6 +3,7 @@ import 'package:pokeclicker/classes/pokemon.dart';
 import 'package:pokeclicker/classes/typeColors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pokeclicker/globals.dart';
+import 'package:pokeclicker/widgets/typeChip.dart';
 
 class DetailsPage extends StatefulWidget {
   DetailsPage({Key key, this.pokemon}) : super(key: key);
@@ -71,12 +72,6 @@ class _DetailsPageState extends State<DetailsPage> {
               child: Center(
                 child: Hero(
                   tag: _pokemon.name,
-                  /* Important for back compatibility */
-                  // child: Image.asset(
-                  //   'assets/front/${pokemon.name.toLowerCase().replaceAll(' ', '_')}.gif',
-                  //   width: 200,
-                  //   fit: BoxFit.contain,
-                  // ),
                   child: CachedNetworkImage(
                     placeholder: (context, url) => CircularProgressIndicator(
                       valueColor:
@@ -148,15 +143,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
   Widget _buildChipsAttribute(String name, List<String> list) {
     List<Widget> _chips = List.generate(list.length, (index) {
-      TypeColors typeColor = pokemonTypeColor[list[index]];
-      return Chip(
-        label: Text(
-          list[index],
-          style: TextStyle(color: typeColor.dark),
-        ),
-        elevation: 2,
-        backgroundColor: typeColor.light,
-      );
+      return TypeChip(name: list[index]);
     });
 
     return Column(

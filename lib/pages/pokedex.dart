@@ -23,10 +23,10 @@ class _PokedexPageState extends State<PokedexPage> {
     _isSortedAlpha = false;
     myScrollController = ScrollController();
 
-    fetchData();
+    _fetchData();
   }
 
-  fetchData() async {
+  _fetchData() async {
     String encodedData =
         await DefaultAssetBundle.of(context).loadString("assets/pokedex.json");
     List<dynamic> decodedJson = jsonDecode(encodedData);

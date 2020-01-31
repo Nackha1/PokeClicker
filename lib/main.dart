@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pokeclicker/classes/coinsManager.dart';
 import 'package:pokeclicker/pages/clicker.dart';
 import 'package:pokeclicker/pages/pokedex.dart';
 import 'package:pokeclicker/pages/settings.dart';
@@ -13,6 +12,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent));
+
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     return MaterialApp(
       title: 'PokeClicker',
