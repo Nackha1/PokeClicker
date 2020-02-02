@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokeclicker/classes/coinsManager.dart';
+import 'package:pokeclicker/classes/pokeManager.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -31,15 +31,15 @@ class ResetData extends StatelessWidget {
       trailing: FlatButton(
         child: Text('RESET'),
         onPressed: () async {
-          CoinsManager.saveValues();
-          CoinsManager.resetValues();
+          PokeManager.saveValues();
+          PokeManager.resetValues();
           SnackBar snackBar = SnackBar(
             content: Text('Data resetted successfully'),
             duration: Duration(seconds: 3),
             action: SnackBarAction(
               label: 'UNDO',
               onPressed: () async {
-                CoinsManager.restoreValues();
+                PokeManager.restoreValues();
               },
             ),
           );

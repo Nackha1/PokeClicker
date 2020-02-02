@@ -1,5 +1,55 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:pokeclicker/classes/pokeball.dart';
+import 'package:pokeclicker/classes/pokemon.dart';
 import 'package:pokeclicker/classes/typeColors.dart';
+
+List<Pokemon> pokedex = List<Pokemon>();
+
+Future<void> loadPokedex(BuildContext context) async {
+  String encodedData =
+      await DefaultAssetBundle.of(context).loadString("assets/pokedex.json");
+  List<dynamic> decodedJson = jsonDecode(encodedData);
+
+  pokedex.clear();
+
+  decodedJson.forEach((item) {
+    Pokemon pokemon = Pokemon.fromJson(item);
+    pokedex.add(pokemon);
+  });
+}
+
+List<Pokeball> pokeballs = [
+  Pokeball(
+    name: 'Pokeball',
+    colors: [Colors.red, Colors.redAccent],
+    asset: 'assets/shop/pokeball.png',
+    pokemons: 1,
+    cost: 10,
+  ),
+  Pokeball(
+    name: 'Megaball',
+    colors: [Colors.blue, Colors.blueAccent],
+    asset: 'assets/shop/megaball.png',
+    pokemons: 3,
+    cost: 30,
+  ),
+  Pokeball(
+    name: 'Ultraball',
+    colors: [Colors.amber, Colors.amberAccent],
+    asset: 'assets/shop/ultraball.png',
+    pokemons: 5,
+    cost: 50,
+  ),
+  Pokeball(
+    name: 'Masterball',
+    colors: [Colors.deepPurple, Colors.deepPurpleAccent],
+    asset: 'assets/shop/masterball.png',
+    pokemons: 1,
+    cost: 25,
+  ),
+];
 
 Map<String, TypeColors> pokemonTypeColor = {
   'Bug': TypeColors(

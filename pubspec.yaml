@@ -49,7 +49,7 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
     - assets/pokedex.json
-    - assets/pokeball3.png
+    - assets/pokeball_click.png
     - assets/pokecoin_back.png
     - assets/pokecoin_front.png
     - assets/front/

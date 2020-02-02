@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pokeclicker/classes/pokeManager.dart';
+import 'package:pokeclicker/globals.dart';
 import 'package:pokeclicker/pages/clicker.dart';
 import 'package:pokeclicker/pages/pokedex.dart';
 import 'package:pokeclicker/pages/settings.dart';
 import 'package:pokeclicker/pages/shop.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await PokeManager.initialize();
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -14,6 +21,8 @@ class MyApp extends StatelessWidget {
         SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent));
 
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+    loadPokedex(context);
 
     return MaterialApp(
       title: 'PokeClicker',

@@ -1,8 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:pokeclicker/classes/coinsManager.dart';
-import 'package:pokeclicker/globals.dart';
+import 'package:pokeclicker/classes/pokeManager.dart';
 
 class ClickerPage extends StatefulWidget {
   @override
@@ -16,7 +15,7 @@ class _ClickerPageState extends State<ClickerPage>
 
   int _pokeballLife;
   int _power;
-  Color _backgroundColor;
+  //Color _backgroundColor;
 
   @override
   void initState() {
@@ -24,28 +23,18 @@ class _ClickerPageState extends State<ClickerPage>
 
     _pokeballLife = 0;
     _power = 10;
-    _backgroundColor = _randomColor();
+    //_backgroundColor = _randomColor();
 
     _animationController = AnimationController(
       value: 0.95,
       vsync: this,
       duration: Duration(milliseconds: 250),
     );
-    _animationController.addListener(() {
-      setState(() {});
-    });
-    _animation = CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.ease,
-    );
-    _animation = Tween(begin: 0.95, end: 0.85).animate(_animation);
-
-    _initialize();
-  }
-
-  void _initialize() async {
-    await CoinsManager.initialize();
-    setState(() {});
+    _animation =
+        Tween<double>(begin: 0.95, end: 0.85).animate(_animationController)
+          ..addListener(() {
+            setState(() {});
+          });
   }
 
   void _onTap() {
@@ -54,16 +43,16 @@ class _ClickerPageState extends State<ClickerPage>
     setState(() {
       _pokeballLife += _power;
       if (_pokeballLife >= 100) {
-        CoinsManager.incrementCoinsByMultiplier();
+        PokeManager.incrementCoinsByMultiplier();
         _pokeballLife = 0;
-        _backgroundColor = _randomColor();
+        //_backgroundColor = _randomColor();
       }
     });
   }
 
-  Color _randomColor() => pokemonTypeColor[pokemonTypeColor.keys
-          .elementAt(new Random().nextInt(pokemonTypeColor.length))]
-      .light;
+  // Color _randomColor() => pokemonTypeColor[pokemonTypeColor.keys
+  //         .elementAt(Random().nextInt(pokemonTypeColor.length))]
+  //     .light;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +87,7 @@ class _ClickerPageState extends State<ClickerPage>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          '${CoinsManager.coins}',
+                          '${PokeManager.coins}',
                           style: TextStyle(
                             fontSize: 64,
                           ),
@@ -113,12 +102,15 @@ class _ClickerPageState extends State<ClickerPage>
                       ],
                     ),
                   ),
-                  GestureDetector(
-                    onTap: _onTap,
-                    child: Transform.scale(
-                      scale: _animation.value,
-                      child: Image.asset(
-                        'assets/pokeball3.png',
+                  Expanded(
+                    flex: 3,
+                    child: GestureDetector(
+                      onTap: _onTap,
+                      child: Transform.scale(
+                        scale: _animation.value,
+                        child: Image.asset(
+                          'assets/pokeball_click.png',
+                        ),
                       ),
                     ),
                   ),
@@ -159,7 +151,7 @@ class _ClickerPageState extends State<ClickerPage>
                 child: Container(
                   child: Center(
                     child: Text(
-                      '+${CoinsManager.multiplier}',
+                      '+${PokeManager.multiplier}',
                       style: Theme.of(context).textTheme.title,
                     ),
                   ),
