@@ -17,6 +17,7 @@ class DetailsPage extends StatefulWidget {
 class _DetailsPageState extends State<DetailsPage> {
   Pokemon _pokemon;
   TypeColors _pokeColors;
+  bool _isLight;
 
   TextStyle _attributeNameStyle;
   TextStyle _attributeValueStyle;
@@ -27,13 +28,14 @@ class _DetailsPageState extends State<DetailsPage> {
 
     _pokemon = widget.pokemon;
     _pokeColors = pokemonTypeColor[_pokemon.type[0]];
+    _isLight = _pokeColors.light.computeLuminance() > 0.5;
     _attributeNameStyle = new TextStyle(
-      color: Colors.white70,
+      color: _isLight ? Colors.black54 : Colors.white70,
       fontSize: 16,
       fontWeight: FontWeight.bold,
     );
     _attributeValueStyle = new TextStyle(
-      color: Colors.white70,
+      color: _isLight ? Colors.black54 : Colors.white70,
       fontSize: 32,
       fontWeight: FontWeight.bold,
     );
@@ -41,33 +43,34 @@ class _DetailsPageState extends State<DetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    var _height =
+        num.tryParse(_pokemon.height.substring(0, _pokemon.height.length - 2))
+            ?.toDouble();
+    print(_height);
     return Scaffold(
       backgroundColor: _pokeColors.normal,
       appBar: AppBar(
         title: Text(
           _pokemon.name,
-          style: Theme.of(context).textTheme.title.copyWith(
-                color: _pokeColors.normal,
-              ),
+          style: TextStyle(
+            color: _pokeColors.normal,
+          ),
         ),
         centerTitle: true,
         elevation: 0.0,
-        iconTheme: Theme.of(context).iconTheme.copyWith(
-              color: _pokeColors.normal,
-            ),
+        iconTheme: IconThemeData(
+          color: _pokeColors.normal,
+        ),
       ),
       body: Column(
-        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Flexible(
             flex: 2,
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(100.0),
-                ),
+            child: Material(
+              elevation: 4.0,
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(100.0),
               ),
               child: Center(
                 child: Hero(
@@ -83,8 +86,8 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                     imageUrl:
                         'https://raw.githubusercontent.com/Nackha1/Hd-sprites/master/${_pokemon.name.replaceAll(' ', '_')}.gif',
-                    width: 250,
-                    fit: BoxFit.contain,
+                    //height: _height * 150,
+                    alignment: Alignment.bottomCenter,
                   ),
                 ),
               ),

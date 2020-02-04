@@ -23,28 +23,28 @@ Future<void> loadPokedex(BuildContext context) async {
 List<Pokeball> pokeballs = [
   Pokeball(
     name: 'Pokeball',
-    colors: [Colors.red, Colors.redAccent],
+    colors: [Colors.red, Colors.red[900]],
     asset: 'assets/shop/pokeball.png',
     pokemons: 1,
     cost: 10,
   ),
   Pokeball(
     name: 'Megaball',
-    colors: [Colors.blue, Colors.blueAccent],
+    colors: [Colors.blue, Colors.blue[900]],
     asset: 'assets/shop/megaball.png',
     pokemons: 3,
     cost: 30,
   ),
   Pokeball(
     name: 'Ultraball',
-    colors: [Colors.amber, Colors.amberAccent],
+    colors: [Colors.amber, Colors.amber[900]],
     asset: 'assets/shop/ultraball.png',
     pokemons: 5,
     cost: 50,
   ),
   Pokeball(
     name: 'Masterball',
-    colors: [Colors.deepPurple, Colors.deepPurpleAccent],
+    colors: [Colors.deepPurple, Colors.deepPurple[900]],
     asset: 'assets/shop/masterball.png',
     pokemons: 1,
     cost: 25,

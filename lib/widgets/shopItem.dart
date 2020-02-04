@@ -71,10 +71,10 @@ class ShopItem extends StatelessWidget {
                           Text(
                             '${item.cost}',
                             style: TextStyle(
-                                color:
-                                    _isLight ? Colors.black54 : Colors.white70,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
+                              color: _isLight ? Colors.black54 : Colors.white70,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),

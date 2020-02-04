@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pokeclicker/classes/pokeManager.dart';
+import 'package:pokeclicker/classes/theme.dart';
+import 'package:provider/provider.dart';
 
 import '../classes/pokeManager.dart';
 
-class SettingsPage extends StatefulWidget {
-  @override
-  _SettingsPageState createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
+class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
@@ -18,20 +16,53 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: ListView(
         children: <Widget>[
+          ListTile(
+            title: Text('Dark Theme'),
+            trailing: Switch(
+              value: PokeManager.readTheme(),
+              onChanged: (value) {
+                if (value) {
+                  _themeChanger.setTheme(ThemeData.dark());
+                } else {
+                  _themeChanger.setTheme(ThemeData(primaryColor: Colors.white));
+                }
+                PokeManager.writeTheme(value);
+              },
+            ),
+          ),
+          Divider(),
+          Builder(builder: (context) {
+            return ListTile(
+              title: Text('Get lots of PokeCoins'),
+              trailing: RaisedButton(
+                child: Text('POKECOINS'),
+                onPressed: () {
+                  PokeManager.addCoins(777);
+                  SnackBar snackBar = SnackBar(
+                    content: Text('Added 777 PokeCoins to your balance'),
+                    action: SnackBarAction(
+                      label: 'OK',
+                      onPressed: () {},
+                    ),
+                  );
+                  Scaffold.of(context).showSnackBar(snackBar);
+                },
+              ),
+            );
+          }),
           Builder(builder: (BuildContext context) {
             return ListTile(
               title: Text('Reset data'),
               trailing: FlatButton(
                 child: Text('RESET'),
-                onPressed: () async {
+                onPressed: () {
                   PokeManager.saveValues();
                   PokeManager.resetValues();
                   SnackBar snackBar = SnackBar(
                     content: Text('Data resetted successfully'),
-                    duration: Duration(seconds: 3),
                     action: SnackBarAction(
                       label: 'UNDO',
-                      onPressed: () async {
+                      onPressed: () {
                         PokeManager.restoreValues();
                       },
                     ),
@@ -41,22 +72,8 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             );
           }),
-          ListTile(
-            title: Text('Get lots of coins'),
-            trailing: RaisedButton(
-              child: Text('GET COINS'),
-              onPressed: () {
-                PokeManager.addCoins(777);
-              },
-            ),
-          ),
         ],
       ),
     );
   }
-}
-
-class ResetData extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {}
 }

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:pokeclicker/classes/pokeManager.dart';
 
@@ -15,17 +13,9 @@ class _ClickerPageState extends State<ClickerPage>
   Animation _animation;
   AnimationController _animationController;
 
-  int _pokeballLife;
-  int _power;
-  //Color _backgroundColor;
-
   @override
   void initState() {
     super.initState();
-
-    _pokeballLife = 0;
-    _power = 10;
-    //_backgroundColor = _randomColor();
 
     _animationController = AnimationController(
       value: 0.95,
@@ -43,23 +33,13 @@ class _ClickerPageState extends State<ClickerPage>
     _animationController.reset();
     _animationController.forward();
     setState(() {
-      _pokeballLife += _power;
-      if (_pokeballLife >= 100) {
-        PokeManager.addCoins(1);
-        _pokeballLife = 0;
-        //_backgroundColor = _randomColor();
-      }
+      PokeManager.incrementProgress();
     });
   }
-
-  // Color _randomColor() => pokemonTypeColor[pokemonTypeColor.keys
-  //         .elementAt(Random().nextInt(pokemonTypeColor.length))]
-  //     .light;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: _backgroundColor,
       appBar: AppBar(
         title: Text('PokeClicker'),
         centerTitle: true,
@@ -76,7 +56,7 @@ class _ClickerPageState extends State<ClickerPage>
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           LinearProgressIndicator(
-            value: (_pokeballLife / 100),
+            value: PokeManager.progress / 100,
           ),
           Expanded(
             child: Container(

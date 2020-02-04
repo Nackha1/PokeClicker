@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:pokeclicker/classes/pokeManager.dart';
 import 'package:pokeclicker/classes/pokemon.dart';
 import 'package:pokeclicker/globals.dart';
-import 'package:pokeclicker/widgets/pokemonTile.dart';
+import 'package:pokeclicker/widgets/activePokeTile.dart';
+import 'package:pokeclicker/widgets/disabledPokeTile.dart';
 
 class PokedexPage extends StatefulWidget {
   @override
@@ -68,20 +69,43 @@ class _PokedexPageState extends State<PokedexPage> {
       appBar: AppBar(
         title: Text(
           'Pokedex',
-          style: Theme.of(context).textTheme.title,
         ),
         centerTitle: true,
         actions: <Widget>[
-          IconButton(
-            icon: Icon(
-                _isShowingPokedex ? Icons.visibility_off : Icons.visibility),
-            onPressed: _show,
-            tooltip: 'Show/Hide Pokedex',
-          ),
-          IconButton(
-            icon: Icon(_isSortedAlpha ? Icons.sort : Icons.sort_by_alpha),
-            onPressed: _sort,
-            tooltip: 'Sort Pokemons',
+          // IconButton(
+          //   icon: Icon(
+          //       _isShowingPokedex ? Icons.visibility_off : Icons.visibility),
+          //   onPressed: _show,
+          //   tooltip: 'Show/Hide Pokedex',
+          // ),
+          // IconButton(
+          //   icon: Icon(_isSortedAlpha ? Icons.sort : Icons.sort_by_alpha),
+          //   onPressed: _sort,
+          //   tooltip: 'Sort Pokemons',
+          // ),
+          PopupMenuButton(
+            onSelected: (value) {
+              if (value == 'show') {
+                _show();
+              } else if (value == 'sort') {
+                _sort();
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return <PopupMenuEntry<dynamic>>[
+                CheckedPopupMenuItem(
+                  checked: _isSortedAlpha,
+                  child: Text('Sort alphabetically'),
+                  value: 'sort',
+                ),
+                CheckedPopupMenuItem(
+                  checked: _isShowingPokedex,
+                  enabled: true,
+                  child: Text('Show all'),
+                  value: 'show',
+                ),
+              ];
+            },
           ),
         ],
       ),
@@ -90,13 +114,21 @@ class _PokedexPageState extends State<PokedexPage> {
         child: GridView.builder(
           padding: const EdgeInsets.all(4.0),
           controller: myScrollController,
+          itemCount: pokemons.length,
           gridDelegate:
               SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-          itemCount: pokemons.length,
           itemBuilder: (BuildContext context, int index) {
-            return buildPokemonTile(context, pokemons[index]);
+            if (PokeManager.caughtPokemons.contains(pokemons[index].id - 1)) {
+              return activePokeTile(context, pokemons[index]);
+            } else {
+              return disabledPokeTile(context, pokemons[index]);
+            }
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: null,
+        label: Text('${PokeManager.caughtPokemons.length}/${pokedex.length}'),
       ),
     );
   }

@@ -13,9 +13,9 @@ class TypeChip extends StatelessWidget {
     return Chip(
       label: Text(
         name,
-        style: TextStyle(color: typeColor.dark),
+        style: TextStyle(color: Colors.black54),
       ),
-      elevation: 2,
+      elevation: 2.0,
       backgroundColor: typeColor.light,
     );
   }
