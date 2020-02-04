@@ -3,20 +3,25 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PokeManager {
   static SharedPreferences prefs;
   static int coins;
-  static int multiplier;
   static List<int> caughtPokemons;
-  static int savedCoins;
-  static int savedMultiplier;
-  static List<int> savedCaughtPokemons;
+  static int _savedCoins;
+  static List<int> _savedCaughtPokemons;
 
   PokeManager();
 
   static Future<void> initialize() async {
     prefs = await SharedPreferences.getInstance();
-    coins = prefs.getInt('coins') ?? 0;
-    multiplier = prefs.getInt('multiplier') ?? 1;
     caughtPokemons = List<int>();
+    _readCoins();
     _readCaughtPokemons();
+  }
+
+  static void _readCoins() {
+    coins = prefs.getInt('coins') ?? 0;
+  }
+
+  static void _writeCoins() async {
+    await prefs.setInt('coins', coins);
   }
 
   static void _readCaughtPokemons() {
@@ -34,47 +39,42 @@ class PokeManager {
     await prefs.setStringList('caughtPokemons', aux);
   }
 
-  static void setCoins(int amount) async {
-    coins = amount;
-    await prefs.setInt('coins', coins);
+  static bool spendCoins(int amount) {
+    if (amount > coins) {
+      return false;
+    } else {
+      coins -= amount;
+      _writeCoins();
+      return true;
+    }
   }
 
-  static void setMultiplier(int amount) async {
-    multiplier = amount;
-    await prefs.setInt('multiplier', multiplier);
+  static void addCoins(int amount) {
+    coins += amount;
+    _writeCoins();
   }
 
-  static void incrementCoinsByMultiplier() async {
-    coins += multiplier;
-    await prefs.setInt('coins', coins);
-  }
-
-  static void addPokemon(int pokemon) async {
+  static void addPokemon(int pokemon) {
     caughtPokemons.add(pokemon);
     _writeCaughtPokemons();
   }
 
   static void saveValues() {
-    savedCoins = coins;
-    savedMultiplier = multiplier;
-    savedCaughtPokemons = caughtPokemons;
+    _savedCoins = coins;
+    _savedCaughtPokemons = caughtPokemons;
   }
 
   static void restoreValues() async {
-    coins = savedCoins;
-    await prefs.setInt('coins', coins);
-    multiplier = savedMultiplier;
-    await prefs.setInt('multiplier', multiplier);
-    caughtPokemons = savedCaughtPokemons;
+    coins = _savedCoins;
+    caughtPokemons = _savedCaughtPokemons;
+    _writeCoins();
     _writeCaughtPokemons();
   }
 
   static void resetValues() async {
     coins = 0;
-    await prefs.setInt('coins', coins);
-    multiplier = 1;
-    await prefs.setInt('multiplier', multiplier);
-    caughtPokemons = List();
+    caughtPokemons = List<int>();
+    _writeCoins();
     _writeCaughtPokemons();
   }
 }

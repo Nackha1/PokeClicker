@@ -79,7 +79,6 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
     _tempList.forEach((item) {
       PokeManager.addPokemon(item);
     });
-    //PokeManager.caughtPokemons.sort((a, b) => a.compareTo(b));
     super.dispose();
   }
 
@@ -98,6 +97,10 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
     _tapAnimCont.forward();
     if (_count < widget.item.pokemons) {
       _catchRandomPokemon();
+    }
+    if (_count == widget.item.pokemons) {
+      // _rotAnimCont.value = 0.0;
+      // _rotAnimCont.dispose();
     }
   }
 

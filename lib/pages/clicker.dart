@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pokeclicker/classes/pokeManager.dart';
 
+import '../classes/pokeManager.dart';
+
 class ClickerPage extends StatefulWidget {
   @override
   _ClickerPageState createState() => _ClickerPageState();
@@ -43,7 +45,7 @@ class _ClickerPageState extends State<ClickerPage>
     setState(() {
       _pokeballLife += _power;
       if (_pokeballLife >= 100) {
-        PokeManager.incrementCoinsByMultiplier();
+        PokeManager.addCoins(1);
         _pokeballLife = 0;
         //_backgroundColor = _randomColor();
       }
@@ -148,14 +150,15 @@ class _ClickerPageState extends State<ClickerPage>
               ),
               Expanded(
                 flex: 5,
-                child: Container(
-                  child: Center(
-                    child: Text(
-                      '+${PokeManager.multiplier}',
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                  ),
-                ),
+                // child: Container(
+                //   child: Center(
+                //     child: Text(
+                //       '+${PokeManager.multiplier}',
+                //       style: Theme.of(context).textTheme.title,
+                //     ),
+                //   ),
+                // ),
+                child: Container(),
               ),
               Expanded(
                 flex: 2,

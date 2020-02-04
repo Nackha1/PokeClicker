@@ -2,10 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:pokeclicker/classes/pokeball.dart';
 import 'package:pokeclicker/pages/unbox.dart';
 
+import '../classes/pokeManager.dart';
+
 class ShopItem extends StatelessWidget {
   const ShopItem({this.item});
 
   final Pokeball item;
+
+  void _showSnackBar(BuildContext context) {
+    SnackBar snackBar = SnackBar(
+      content: Text("You don't have enough PokeCoins!"),
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
+
+  void _navigateToUnboxPage(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) => UnboxPage(
+          item: item,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +41,11 @@ class ShopItem extends StatelessWidget {
         color: item.colors[0],
         child: InkWell(
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (BuildContext context) => UnboxPage(
-                  item: item,
-                ),
-              ),
-            );
+            if (PokeManager.spendCoins(item.cost)) {
+              _navigateToUnboxPage(context);
+            } else {
+              _showSnackBar(context);
+            }
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
