@@ -9,9 +9,11 @@ import 'package:pokeclicker/widgets/activePokeTile.dart';
 import 'package:pokeclicker/widgets/customShapeClipper.dart';
 
 class UnboxPage extends StatefulWidget {
-  const UnboxPage({this.item});
+  const UnboxPage({this.item, this.isDarkColor, this.pageStyleColor});
 
   final Pokeball item;
+  final bool isDarkColor;
+  final Color pageStyleColor;
 
   @override
   _UnboxPageState createState() => _UnboxPageState();
@@ -19,8 +21,6 @@ class UnboxPage extends StatefulWidget {
 
 class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
   List<int> _tempList;
-  bool _isDarkColor;
-  Color _pageStyleColor;
   int _count;
   double _tileSize;
   ScrollController _scrollController;
@@ -36,8 +36,6 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
     super.initState();
 
     _tempList = List<int>();
-    _isDarkColor = widget.item.colors[0].computeLuminance() < 0.5;
-    _pageStyleColor = _isDarkColor ? Colors.white70 : Colors.black54;
     _count = 0;
     _scrollController = ScrollController();
 
@@ -102,8 +100,18 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
         duration: Duration(milliseconds: 250), curve: Curves.easeInOut);
   }
 
-  void _onTap() {
-    if (_count < widget.item.pokemons) {
+  void _showSnackBar(BuildContext context) {
+    SnackBar snackBar = SnackBar(
+      content: Text(
+          "You don't have enough PokeCoins [${PokeManager.coins}/${widget.item.cost}]"),
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
+
+  void _onTap(BuildContext context) {
+    if (_count == 0 && !PokeManager.spendCoins(widget.item.cost)) {
+      _showSnackBar(context);
+    } else if (_count < widget.item.pokemons) {
       _tapAnimCont.reset();
       _tapAnimCont.forward();
       _catchRandomPokemon();
@@ -119,11 +127,11 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
     _tileSize = MediaQuery.of(context).size.height / 4;
     return Scaffold(
       appBar: AppBar(
-        brightness: _isDarkColor ? Brightness.dark : Brightness.light,
+        brightness: widget.isDarkColor ? Brightness.dark : Brightness.light,
         title: Text(
           widget.item.name,
           style: TextStyle(
-            color: _pageStyleColor,
+            color: widget.pageStyleColor,
             fontSize: 32,
             fontWeight: FontWeight.bold,
           ),
@@ -131,7 +139,7 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
         centerTitle: true,
         backgroundColor: widget.item.colors[0],
         elevation: 0.0,
-        iconTheme: IconThemeData(color: _pageStyleColor),
+        iconTheme: IconThemeData(color: widget.pageStyleColor),
       ),
       body: Column(
         children: <Widget>[
@@ -153,18 +161,22 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: _onTap,
-                    child: Transform.rotate(
-                      angle: _rotAnim.value,
-                      child: Transform.scale(
-                        scale: _tapAnim.value,
-                        child: Image.asset(
-                          widget.item.asset,
+                  child: Builder(builder: (myContext) {
+                    return GestureDetector(
+                      onTap: () {
+                        _onTap(myContext);
+                      },
+                      child: Transform.rotate(
+                        angle: _rotAnim.value,
+                        child: Transform.scale(
+                          scale: _tapAnim.value,
+                          child: Image.asset(
+                            widget.item.asset,
+                          ),
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 ),
               ],
             ),
@@ -189,13 +201,20 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
           ),
         ],
       ),
-      //floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: _count >= widget.item.pokemons
           ? FloatingActionButton.extended(
               backgroundColor: widget.item.colors[0],
               onPressed: () => Navigator.of(context).pop(),
-              icon: Icon(Icons.done),
-              label: Text('DONE'),
+              icon: Icon(
+                Icons.done,
+                color: widget.pageStyleColor,
+              ),
+              label: Text(
+                'DONE',
+                style: TextStyle(
+                  color: widget.pageStyleColor,
+                ),
+              ),
             )
           : null,
     );

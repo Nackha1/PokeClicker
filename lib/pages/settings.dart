@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pokeclicker/classes/pokeManager.dart';
-import 'package:pokeclicker/classes/theme.dart';
+import 'package:pokeclicker/classes/themeChanger.dart';
 import 'package:provider/provider.dart';
 
-import '../classes/pokeManager.dart';
+class SettingsPage extends StatefulWidget {
+  @override
+  _SettingsPageState createState() => _SettingsPageState();
+}
 
-class SettingsPage extends StatelessWidget {
+class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
@@ -30,6 +33,7 @@ class SettingsPage extends StatelessWidget {
               },
             ),
           ),
+          //StepTile(),
           Divider(),
           Builder(builder: (context) {
             return ListTile(
@@ -77,3 +81,33 @@ class SettingsPage extends StatelessWidget {
     );
   }
 }
+
+// class StepTile extends StatefulWidget {
+//   const StepTile({
+//     Key key,
+//   }) : super(key: key);
+
+//   @override
+//   _StepTileState createState() => _StepTileState();
+// }
+
+// class _StepTileState extends State<StepTile> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListTile(
+//       title: Text('Steps counter'),
+//       subtitle: Text('10 steps = 1 PokeCoin'),
+//       trailing: Switch(
+//         value: StepManager.isListening,
+//         onChanged: (value) {
+//           if (value) {
+//             StepManager.startListening();
+//           } else {
+//             StepManager.stopListening();
+//           }
+//           setState(() {});
+//         },
+//       ),
+//     );
+//   }
+// }

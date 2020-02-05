@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokeclicker/globals.dart';
 import 'package:pokeclicker/widgets/shopItem.dart';
 
-class ShopPage extends StatefulWidget {
-  @override
-  _ShopPageState createState() => _ShopPageState();
-}
-
-class _ShopPageState extends State<ShopPage> {
+class ShopPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

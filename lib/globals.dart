@@ -20,7 +20,7 @@ Future<void> loadPokedex(BuildContext context) async {
   });
 }
 
-List<Pokeball> pokeballs = [
+final List<Pokeball> pokeballs = [
   Pokeball(
     name: 'Pokeball',
     colors: [Colors.red, Colors.red[900]],
@@ -33,25 +33,25 @@ List<Pokeball> pokeballs = [
     colors: [Colors.blue, Colors.blue[900]],
     asset: 'assets/shop/megaball.png',
     pokemons: 3,
-    cost: 30,
+    cost: 25,
   ),
   Pokeball(
     name: 'Ultraball',
     colors: [Colors.amber, Colors.amber[900]],
     asset: 'assets/shop/ultraball.png',
     pokemons: 5,
-    cost: 50,
+    cost: 40,
   ),
   Pokeball(
     name: 'Masterball',
     colors: [Colors.deepPurple, Colors.deepPurple[900]],
     asset: 'assets/shop/masterball.png',
-    pokemons: 1,
-    cost: 25,
+    pokemons: 10,
+    cost: 75,
   ),
 ];
 
-Map<String, TypeColors> pokemonTypeColor = {
+final Map<String, TypeColors> pokemonTypeColor = {
   'Bug': TypeColors(
     light: Color(0xFFC6D16E),
     normal: Color(0xFFA8B820),

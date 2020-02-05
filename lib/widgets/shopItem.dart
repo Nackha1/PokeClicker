@@ -2,25 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:pokeclicker/classes/pokeball.dart';
 import 'package:pokeclicker/pages/unbox.dart';
 
-import '../classes/pokeManager.dart';
-
 class ShopItem extends StatelessWidget {
   const ShopItem({this.item});
 
   final Pokeball item;
 
-  void _showSnackBar(BuildContext context) {
-    SnackBar snackBar = SnackBar(
-      content: Text("You don't have enough PokeCoins!"),
-    );
-    Scaffold.of(context).showSnackBar(snackBar);
-  }
-
-  void _navigateToUnboxPage(BuildContext context) {
+  void _navigateToUnboxPage(
+      BuildContext context, bool _isDarkColor, Color _pageStyleColor) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) => UnboxPage(
           item: item,
+          isDarkColor: _isDarkColor,
+          pageStyleColor: _pageStyleColor,
         ),
       ),
     );
@@ -28,7 +22,8 @@ class ShopItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool _isLight = item.colors[0].computeLuminance() > 0.5;
+    bool _isDarkColor = item.colors[0].computeLuminance() < 0.5;
+    Color _pageStyleColor = _isDarkColor ? Colors.white70 : Colors.black54;
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, right: 16.0, bottom: 8.0),
       child: Material(
@@ -41,11 +36,7 @@ class ShopItem extends StatelessWidget {
         color: item.colors[0],
         child: InkWell(
           onTap: () {
-            if (PokeManager.spendCoins(item.cost)) {
-              _navigateToUnboxPage(context);
-            } else {
-              _showSnackBar(context);
-            }
+            _navigateToUnboxPage(context, _isDarkColor, _pageStyleColor);
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,7 +62,7 @@ class ShopItem extends StatelessWidget {
                           Text(
                             '${item.cost}',
                             style: TextStyle(
-                              color: _isLight ? Colors.black54 : Colors.white70,
+                              color: _pageStyleColor,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
@@ -81,7 +72,7 @@ class ShopItem extends StatelessWidget {
                       Text(
                         item.name,
                         style: TextStyle(
-                          color: _isLight ? Colors.black54 : Colors.white70,
+                          color: _pageStyleColor,
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
                         ),
@@ -89,7 +80,7 @@ class ShopItem extends StatelessWidget {
                       Text(
                         'Pokemons x${item.pokemons}',
                         style: TextStyle(
-                          color: _isLight ? Colors.black54 : Colors.white70,
+                          color: _pageStyleColor,
                           fontSize: 16,
                         ),
                       ),

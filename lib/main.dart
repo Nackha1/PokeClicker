@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pokeclicker/classes/pokeManager.dart';
-import 'package:pokeclicker/classes/theme.dart';
+import 'package:pokeclicker/classes/themeChanger.dart';
 import 'package:pokeclicker/globals.dart';
 import 'package:pokeclicker/pages/clicker.dart';
 import 'package:pokeclicker/pages/pokedex.dart';
