@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pokeclicker/classes/pokeManager.dart';
 import 'package:pokeclicker/classes/themeChanger.dart';
-import 'package:pokeclicker/globals.dart';
 import 'package:pokeclicker/pages/clicker.dart';
 import 'package:pokeclicker/pages/pokedex.dart';
 import 'package:pokeclicker/pages/settings.dart';
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
 
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    loadPokedex(context);
+    PokeManager.loadPokedex(context);
 
     return ChangeNotifierProvider<ThemeChanger>(
       create: (context) {

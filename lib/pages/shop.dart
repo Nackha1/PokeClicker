@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokeclicker/globals.dart';
+import 'package:pokeclicker/classes/pokeManager.dart';
 import 'package:pokeclicker/widgets/shopItem.dart';
 
 class ShopPage extends StatelessWidget {
@@ -11,9 +11,9 @@ class ShopPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: ListView.builder(
-        itemCount: pokeballs.length,
+        itemCount: PokeManager.pokeballs.length,
         itemBuilder: (BuildContext context, int index) {
-          return ShopItem(item: pokeballs[index]);
+          return ShopItem(item: PokeManager.pokeballs[index]);
         },
       ),
     );

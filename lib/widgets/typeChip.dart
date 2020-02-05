@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pokeclicker/classes/pokeManager.dart';
 import 'package:pokeclicker/classes/typeColors.dart';
-import 'package:pokeclicker/globals.dart';
 
 class TypeChip extends StatelessWidget {
   TypeChip({this.name});
@@ -9,7 +9,7 @@ class TypeChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TypeColors typeColor = pokemonTypeColor[name];
+    TypeColors typeColor = PokeManager.pokemonTypeColor[name];
     return Chip(
       label: Text(
         name,

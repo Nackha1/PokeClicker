@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pokeclicker/classes/pokeManager.dart';
 import 'package:pokeclicker/classes/pokemon.dart';
 import 'package:pokeclicker/classes/typeColors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:pokeclicker/globals.dart';
 import 'package:pokeclicker/widgets/typeChip.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -27,7 +27,7 @@ class _DetailsPageState extends State<DetailsPage> {
     super.initState();
 
     _pokemon = widget.pokemon;
-    _pokeColors = pokemonTypeColor[_pokemon.type[0]];
+    _pokeColors = PokeManager.pokemonTypeColor[_pokemon.type[0]];
     _isLight = _pokeColors.light.computeLuminance() > 0.5;
     _attributeNameStyle = new TextStyle(
       color: _isLight ? Colors.black54 : Colors.white70,

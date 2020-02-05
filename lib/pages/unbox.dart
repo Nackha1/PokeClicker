@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pokeclicker/classes/pokeManager.dart';
 import 'package:pokeclicker/classes/pokeball.dart';
-import 'package:pokeclicker/globals.dart';
 import 'package:pokeclicker/widgets/activePokeTile.dart';
 
 import 'package:pokeclicker/widgets/customShapeClipper.dart';
@@ -34,7 +33,18 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _initialize();
+  }
 
+  @override
+  void dispose() {
+    _rotAnimCont.dispose();
+    _tapAnimCont.dispose();
+    _save();
+    super.dispose();
+  }
+
+  void _initialize() {
     _tempList = List<int>();
     _count = 0;
     _scrollController = ScrollController();
@@ -77,20 +87,16 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
     _rotAnimCont.forward();
   }
 
-  @override
-  void dispose() {
-    _rotAnimCont.dispose();
-    _tapAnimCont.dispose();
+  void _save() {
     _tempList.forEach((item) {
       PokeManager.addPokemon(item);
     });
-    super.dispose();
   }
 
-  void _catchRandomPokemon() {
+  void _catchRandomPokemon(BuildContext context) {
     int index;
     do {
-      index = Random().nextInt(pokedex.length);
+      index = Random().nextInt(PokeManager.pokedex.length);
     } while (PokeManager.caughtPokemons.contains(index) ||
         _tempList.contains(index));
     _tempList.add(index);
@@ -100,10 +106,9 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
         duration: Duration(milliseconds: 250), curve: Curves.easeInOut);
   }
 
-  void _showSnackBar(BuildContext context) {
+  void _showSnackBar(BuildContext context, String text) {
     SnackBar snackBar = SnackBar(
-      content: Text(
-          "You don't have enough PokeCoins [${PokeManager.coins}/${widget.item.cost}]"),
+      content: Text(text),
       action: SnackBarAction(label: 'OK', onPressed: () {}),
     );
     Scaffold.of(context).removeCurrentSnackBar();
@@ -111,12 +116,16 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
   }
 
   void _onTap(BuildContext context) {
-    if (_count == 0 && !PokeManager.spendCoins(widget.item.cost)) {
-      _showSnackBar(context);
+    if (PokeManager.caughtPokemons.length == PokeManager.pokedex.length) {
+      _showSnackBar(
+          context, "Congratulations! You have completed the Pokedex!");
+    } else if (_count == 0 && !PokeManager.spendCoins(widget.item.cost)) {
+      _showSnackBar(context,
+          "You don't have enough PokeCoins [${PokeManager.coins}/${widget.item.cost}]");
     } else if (_count < widget.item.pokemons) {
       _tapAnimCont.reset();
       _tapAnimCont.forward();
-      _catchRandomPokemon();
+      _catchRandomPokemon(context);
     }
     if (_count == widget.item.pokemons) {
       _rotAnimCont.removeStatusListener(_rotStatusList);
@@ -195,7 +204,8 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
                       crossAxisCount: 1),
                   itemCount: _tempList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return activePokeTile(context, pokedex[_tempList[index]]);
+                    return activePokeTile(
+                        context, PokeManager.pokedex[_tempList[index]]);
                   },
                 ),
               ),
@@ -206,13 +216,16 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
       floatingActionButton: _count >= widget.item.pokemons
           ? FloatingActionButton.extended(
               backgroundColor: widget.item.colors[0],
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                _save();
+                _initialize();
+              },
               icon: Icon(
-                Icons.done,
+                Icons.refresh,
                 color: widget.pageStyleColor,
               ),
               label: Text(
-                'DONE',
+                'REPEAT',
                 style: TextStyle(
                   color: widget.pageStyleColor,
                 ),

@@ -130,7 +130,16 @@ class _ClickerPageState extends State<ClickerPage>
               ),
               Expanded(
                 flex: 5,
-                child: Container(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.touch_app),
+                    Text(
+                      '+${PokeManager.getPower() / 100}',
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                  ],
+                ),
               ),
               Expanded(
                 flex: 2,

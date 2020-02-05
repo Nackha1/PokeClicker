@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:pokeclicker/classes/pokeManager.dart';
 import 'package:pokeclicker/classes/pokemon.dart';
 import 'package:pokeclicker/classes/typeColors.dart';
-import 'package:pokeclicker/globals.dart';
 import 'package:pokeclicker/pages/details.dart';
 
 Widget activePokeTile(BuildContext context, Pokemon pokemon) {
-  TypeColors _pokeColors = pokemonTypeColor[pokemon.type[0]];
+  TypeColors _pokeColors = PokeManager.pokemonTypeColor[pokemon.type[0]];
   return Padding(
     padding: const EdgeInsets.all(4.0),
     child: Material(
@@ -51,7 +51,6 @@ Widget activePokeTile(BuildContext context, Pokemon pokemon) {
                           tag: pokemon.name,
                           child: Image.asset(
                             'assets/front/${pokemon.name.toLowerCase().replaceAll(' ', '_')}.gif',
-                            alignment: Alignment.bottomCenter,
                           ),
                         ),
                       ),

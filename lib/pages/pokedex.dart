@@ -2,7 +2,6 @@ import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
 import 'package:pokeclicker/classes/pokeManager.dart';
 import 'package:pokeclicker/classes/pokemon.dart';
-import 'package:pokeclicker/globals.dart';
 import 'package:pokeclicker/widgets/activePokeTile.dart';
 import 'package:pokeclicker/widgets/disabledPokeTile.dart';
 
@@ -31,7 +30,7 @@ class _PokedexPageState extends State<PokedexPage> {
 
   void _loadCaughtPokemons() {
     PokeManager.caughtPokemons.forEach((item) {
-      pokemons.add(pokedex[item]);
+      pokemons.add(PokeManager.pokedex[item]);
     });
     pokemons.sort((a, b) => a.id.compareTo(b.id));
   }
@@ -50,7 +49,7 @@ class _PokedexPageState extends State<PokedexPage> {
     if (_isShowingPokedex) {
       _loadCaughtPokemons();
     } else {
-      pokemons.addAll(pokedex);
+      pokemons.addAll(PokeManager.pokedex);
     }
 
     _isSortedAlpha
@@ -72,17 +71,6 @@ class _PokedexPageState extends State<PokedexPage> {
         ),
         centerTitle: true,
         actions: <Widget>[
-          // IconButton(
-          //   icon: Icon(
-          //       _isShowingPokedex ? Icons.visibility_off : Icons.visibility),
-          //   onPressed: _show,
-          //   tooltip: 'Show/Hide Pokedex',
-          // ),
-          // IconButton(
-          //   icon: Icon(_isSortedAlpha ? Icons.sort : Icons.sort_by_alpha),
-          //   onPressed: _sort,
-          //   tooltip: 'Sort Pokemons',
-          // ),
           PopupMenuButton(
             onSelected: (value) {
               if (value == 'show') {
@@ -128,7 +116,8 @@ class _PokedexPageState extends State<PokedexPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: null,
-        label: Text('${PokeManager.caughtPokemons.length}/${pokedex.length}'),
+        label: Text(
+            '${PokeManager.caughtPokemons.length}/${PokeManager.pokedex.length}'),
       ),
     );
   }
