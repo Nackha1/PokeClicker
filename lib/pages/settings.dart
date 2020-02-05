@@ -33,7 +33,6 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
           ),
-          //StepTile(),
           Divider(),
           Builder(builder: (context) {
             return ListTile(
@@ -49,6 +48,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       onPressed: () {},
                     ),
                   );
+                  Scaffold.of(context).removeCurrentSnackBar();
                   Scaffold.of(context).showSnackBar(snackBar);
                 },
               ),
@@ -71,6 +71,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       },
                     ),
                   );
+                  Scaffold.of(context).removeCurrentSnackBar();
                   Scaffold.of(context).showSnackBar(snackBar);
                 },
               ),
@@ -81,33 +82,3 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 }
-
-// class StepTile extends StatefulWidget {
-//   const StepTile({
-//     Key key,
-//   }) : super(key: key);
-
-//   @override
-//   _StepTileState createState() => _StepTileState();
-// }
-
-// class _StepTileState extends State<StepTile> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListTile(
-//       title: Text('Steps counter'),
-//       subtitle: Text('10 steps = 1 PokeCoin'),
-//       trailing: Switch(
-//         value: StepManager.isListening,
-//         onChanged: (value) {
-//           if (value) {
-//             StepManager.startListening();
-//           } else {
-//             StepManager.stopListening();
-//           }
-//           setState(() {});
-//         },
-//       ),
-//     );
-//   }
-// }

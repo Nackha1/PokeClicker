@@ -120,7 +120,7 @@ class _ClickerPageState extends State<ClickerPage>
                         padding: const EdgeInsets.all(8.0),
                         child: Icon(
                           Icons.shopping_cart,
-                          color: Colors.white70,
+                          color: Colors.white,
                           size: 32,
                         ),
                       ),
@@ -130,14 +130,6 @@ class _ClickerPageState extends State<ClickerPage>
               ),
               Expanded(
                 flex: 5,
-                // child: Container(
-                //   child: Center(
-                //     child: Text(
-                //       '+${PokeManager.multiplier}',
-                //       style: Theme.of(context).textTheme.title,
-                //     ),
-                //   ),
-                // ),
                 child: Container(),
               ),
               Expanded(
@@ -158,7 +150,7 @@ class _ClickerPageState extends State<ClickerPage>
                         padding: const EdgeInsets.all(8.0),
                         child: Icon(
                           Icons.menu,
-                          color: Colors.white70,
+                          color: Colors.white,
                           size: 32,
                         ),
                       ),

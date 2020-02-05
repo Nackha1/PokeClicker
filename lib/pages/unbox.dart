@@ -104,7 +104,9 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
     SnackBar snackBar = SnackBar(
       content: Text(
           "You don't have enough PokeCoins [${PokeManager.coins}/${widget.item.cost}]"),
+      action: SnackBarAction(label: 'OK', onPressed: () {}),
     );
+    Scaffold.of(context).removeCurrentSnackBar();
     Scaffold.of(context).showSnackBar(snackBar);
   }
 

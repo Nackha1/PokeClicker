@@ -86,7 +86,6 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                     imageUrl:
                         'https://raw.githubusercontent.com/Nackha1/Hd-sprites/master/${_pokemon.name.replaceAll(' ', '_')}.gif',
-                    //height: _height * 150,
                     alignment: Alignment.bottomCenter,
                   ),
                 ),
