@@ -43,6 +43,12 @@ class _ClickerPageState extends State<ClickerPage>
       appBar: AppBar(
         title: Text('PokeClicker'),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.info_outline),
+          onPressed: () {
+            Navigator.pushNamed(context, '/about_me');
+          },
+        ),
         actions: <Widget>[
           IconButton(
             onPressed: () {

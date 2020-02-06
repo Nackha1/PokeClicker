@@ -1,5 +1,5 @@
 name: pokeclicker
-description: A new Flutter project.
+description: A Pokemon Clicker game developed in Flutter
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -23,6 +23,10 @@ dependencies:
   cached_network_image: ^2.0.0
   shared_preferences: ^0.5.6+1
   provider: ^4.0.2
+  flutter_launcher_icons: ^0.7.4
+  font_awesome_flutter: ^8.5.0
+  url_launcher: ^5.4.1
+  package_info: ^0.4.0+13
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -49,11 +53,9 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
-    - assets/pokedex.json
-    - assets/pokeball_click.png
-    - assets/pokecoin_back.png
-    - assets/pokecoin_front.png
+    - assets/
     - assets/front/
+    - assets/icon/
     - assets/shop/
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -81,3 +83,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  image_path: "assets/icon/icon.png"

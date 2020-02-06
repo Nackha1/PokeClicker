@@ -10,9 +10,13 @@ class PokeManager {
   static SharedPreferences prefs;
   static int coins;
   static int progress;
+  static int prestige;
+  static bool completed;
   static List<int> caughtPokemons;
   static int _savedCoins;
   static int _savedProgress;
+  static int _savedPrestige;
+  static bool _savedCompleted;
   static List<int> _savedCaughtPokemons;
 
   static List<Pokemon> pokedex = List<Pokemon>();
@@ -148,6 +152,8 @@ class PokeManager {
     caughtPokemons = List<int>();
     _readCoins();
     _readProgress();
+    _readPrestige();
+    _readCompleted();
     _readCaughtPokemons();
   }
 
@@ -195,6 +201,22 @@ class PokeManager {
     });
   }
 
+  static void _readPrestige() {
+    prestige = prefs.getInt('prestige') ?? 0;
+  }
+
+  static void _writePrestige() async {
+    await prefs.setInt('prestige', prestige);
+  }
+
+  static void _readCompleted() {
+    completed = prefs.getBool('completed') ?? false;
+  }
+
+  static void _writeCompleted() async {
+    await prefs.setBool('completed', completed);
+  }
+
   static void _writeCaughtPokemons() async {
     List<String> aux = List<String>();
     caughtPokemons.forEach((item) {
@@ -219,7 +241,7 @@ class PokeManager {
   }
 
   static void incrementProgress() {
-    var power = 10 + (caughtPokemons.length / 10).floor();
+    int power = 10 + prestige + (caughtPokemons.length / 10).floor();
     progress += power;
     if (progress >= 100) {
       addCoins(1);
@@ -236,27 +258,49 @@ class PokeManager {
   static void saveValues() {
     _savedCoins = coins;
     _savedProgress = progress;
+    _savedPrestige = prestige;
+    _savedCompleted = completed;
     _savedCaughtPokemons = caughtPokemons;
   }
 
-  static void restoreValues() async {
+  static void restoreValues() {
     coins = _savedCoins;
     progress = _savedProgress;
+    prestige = _savedPrestige;
+    completed = _savedCompleted;
     caughtPokemons = _savedCaughtPokemons;
 
     _writeCoins();
     _writeProgress();
+    _writePrestige();
+    _writeCompleted();
     _writeCaughtPokemons();
   }
 
-  static void resetValues() async {
+  static void resetValues() {
     coins = 0;
     progress = 0;
+    prestige = 0;
+    completed = false;
     caughtPokemons = List<int>();
     _writeCoins();
     _writeProgress();
+    _writePrestige();
+    _writeCompleted();
     _writeCaughtPokemons();
   }
 
-  static int getPower() => 10 + (caughtPokemons.length / 10).floor();
+  static void completedPokedex() {
+    completed = true;
+    _writeCompleted();
+  }
+
+  static void lvlUpPrestige() {
+    _savedPrestige = prestige;
+    resetValues();
+    prestige = ++_savedPrestige;
+    _writePrestige();
+  }
+
+  static int getPower() => 10 + prestige + (caughtPokemons.length / 10).floor();
 }

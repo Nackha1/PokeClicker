@@ -51,6 +51,7 @@ Widget activePokeTile(BuildContext context, Pokemon pokemon) {
                           tag: pokemon.name,
                           child: Image.asset(
                             'assets/front/${pokemon.name.toLowerCase().replaceAll(' ', '_')}.gif',
+                            alignment: Alignment.bottomCenter,
                           ),
                         ),
                       ),

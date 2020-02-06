@@ -29,12 +29,12 @@ class _DetailsPageState extends State<DetailsPage> {
     _pokemon = widget.pokemon;
     _pokeColors = PokeManager.pokemonTypeColor[_pokemon.type[0]];
     _isLight = _pokeColors.light.computeLuminance() > 0.5;
-    _attributeNameStyle = new TextStyle(
+    _attributeNameStyle = TextStyle(
       color: _isLight ? Colors.black54 : Colors.white70,
       fontSize: 16,
       fontWeight: FontWeight.bold,
     );
-    _attributeValueStyle = new TextStyle(
+    _attributeValueStyle = TextStyle(
       color: _isLight ? Colors.black54 : Colors.white70,
       fontSize: 32,
       fontWeight: FontWeight.bold,
@@ -43,10 +43,6 @@ class _DetailsPageState extends State<DetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var _height =
-        num.tryParse(_pokemon.height.substring(0, _pokemon.height.length - 2))
-            ?.toDouble();
-    print(_height);
     return Scaffold(
       backgroundColor: _pokeColors.normal,
       appBar: AppBar(
@@ -86,7 +82,6 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                     imageUrl:
                         'https://raw.githubusercontent.com/Nackha1/Hd-sprites/master/${_pokemon.name.replaceAll(' ', '_')}.gif',
-                    alignment: Alignment.bottomCenter,
                   ),
                 ),
               ),

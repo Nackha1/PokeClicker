@@ -116,9 +116,9 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
   }
 
   void _onTap(BuildContext context) {
-    if (PokeManager.caughtPokemons.length == PokeManager.pokedex.length) {
-      _showSnackBar(
-          context, "Congratulations! You have completed the Pokedex!");
+    if (PokeManager.caughtPokemons.length >= PokeManager.pokedex.length) {
+      PokeManager.completedPokedex();
+      Navigator.of(context).pushNamed('/win');
     } else if (_count == 0 && !PokeManager.spendCoins(widget.item.cost)) {
       _showSnackBar(context,
           "You don't have enough PokeCoins [${PokeManager.coins}/${widget.item.cost}]");
@@ -154,7 +154,7 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
       ),
       body: Column(
         children: <Widget>[
-          Flexible(
+          Expanded(
             child: Stack(
               alignment: Alignment.topCenter,
               children: <Widget>[
@@ -192,7 +192,7 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
               ],
             ),
           ),
-          Flexible(
+          Expanded(
             child: Center(
               child: SizedBox(
                 height: _tileSize,
