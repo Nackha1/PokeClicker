@@ -141,8 +141,15 @@ class _ClickerPageState extends State<ClickerPage>
                   children: <Widget>[
                     Icon(Icons.touch_app),
                     Text(
-                      '+${PokeManager.getPower() / 100}',
+                      '${(PokeManager.getRawPower() / 100).toStringAsPrecision(2)}',
                       style: Theme.of(context).textTheme.title,
+                    ),
+                    Text(
+                      ' (+${(PokeManager.prestige * 5 / 100).toStringAsPrecision(2)})',
+                      style: Theme.of(context)
+                          .textTheme
+                          .title
+                          .copyWith(color: Colors.green),
                     ),
                   ],
                 ),

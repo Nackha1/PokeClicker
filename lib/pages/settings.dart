@@ -68,92 +68,263 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: Column(
         children: <Widget>[
-          ListTile(
-            title: Text('Dark Theme'),
-            trailing: Switch(
-              value: PokeManager.readTheme(),
-              onChanged: (value) {
-                if (value) {
-                  _themeChanger.setTheme(ThemeData.dark());
-                } else {
-                  _themeChanger.setTheme(ThemeData(primaryColor: Colors.white));
-                }
-                PokeManager.writeTheme(value);
-              },
-            ),
-          ),
-          ListTile(
-            title: Text('Level up your prestige'),
-            subtitle: Text('Current level: ${PokeManager.prestige}'),
-            trailing: RaisedButton(
-                child: Text('PRESTIGE'),
-                onPressed: PokeManager.completed
-                    ? () {
-                        Navigator.of(context).pushNamed('/win');
-                      }
-                    : null),
-          ),
-          Divider(),
-          ListTile(
-            title: Text('Complete Pokedex'),
-            trailing: RaisedButton(
-              child: Text('COMPLETE'),
-              onPressed: () {
-                PokeManager.completedPokedex();
-                setState(() {});
-              },
-            ),
-          ),
-          Builder(
-            builder: (context) {
-              return ListTile(
-                title: Text('Get lots of PokeCoins'),
-                trailing: RaisedButton(
-                  child: Text('POKECOINS'),
-                  onPressed: () {
-                    PokeManager.addCoins(777);
-                    SnackBar snackBar = SnackBar(
-                      content: Text('Added 777 PokeCoins to your balance'),
-                      action: SnackBarAction(
-                        label: 'OK',
-                        onPressed: () {},
-                      ),
-                    );
-                    Scaffold.of(context).removeCurrentSnackBar();
-                    Scaffold.of(context).showSnackBar(snackBar);
+          Expanded(
+              child: ListView(
+            children: <Widget>[
+              ListTile(
+                title: Text('Dark Theme'),
+                trailing: Switch(
+                  value: PokeManager.readTheme(),
+                  onChanged: (value) {
+                    if (value) {
+                      _themeChanger.setTheme(ThemeData.dark());
+                    } else {
+                      _themeChanger
+                          .setTheme(ThemeData(primaryColor: Colors.white));
+                    }
+                    PokeManager.writeTheme(value);
                   },
                 ),
-              );
-            },
-          ),
-          Builder(
-            builder: (BuildContext context) {
-              return ListTile(
-                title: Text('Reset data'),
-                trailing: FlatButton(
-                  child: Text('RESET'),
-                  onPressed: () async {
-                    if (await _showDialog(context)) {
-                      PokeManager.saveValues();
-                      PokeManager.resetValues();
-                      SnackBar snackBar = SnackBar(
-                        content: Text('Data resetted successfully'),
-                        action: SnackBarAction(
-                          label: 'UNDO',
+              ),
+              ListTile(
+                title: Text('Level up your prestige'),
+                trailing: RaisedButton(
+                    child: Text('PRESTIGE'),
+                    onPressed: PokeManager.completed
+                        ? () {
+                            Navigator.of(context).pushNamed('/win');
+                          }
+                        : null),
+              ),
+              Divider(),
+              ListTile(
+                title: Text('Tap power'),
+                subtitle: Text('Increases by 0.01 every 10 Pokemons caught'),
+                trailing: Text(
+                    '+${(PokeManager.getRawPower() / 100).toStringAsPrecision(2)}'),
+              ),
+              ListTile(
+                title: Text('Prestige level'),
+                subtitle: Text('Each level grants +0.05 tap power'),
+                trailing: Text('${PokeManager.prestige}'),
+              ),
+              ListTile(
+                title: Text('Prestige tap power'),
+                trailing: Text(
+                    '+${(PokeManager.prestige * 5 / 100).toStringAsPrecision(2)}'),
+              ),
+              ListTile(
+                title: Text('PokeCoins'),
+                trailing: Text('${PokeManager.coins}'),
+              ),
+              ListTile(
+                title: Text('Pokedex'),
+                trailing: Text(
+                    '${PokeManager.caughtPokemons.length}/${PokeManager.pokedex.length}'),
+              ),
+              ExpansionTile(
+                title: Text('Debug'),
+                children: <Widget>[
+                  ListTile(
+                    title: Text('Complete Pokedex'),
+                    trailing: RaisedButton(
+                      child: Text('COMPLETE'),
+                      onPressed: () {
+                        PokeManager.caughtPokemons.clear();
+                        for (var i = 0; i < PokeManager.pokedex.length; i++) {
+                          PokeManager.caughtPokemons.add(i);
+                        }
+                        PokeManager.completedPokedex();
+                        setState(() {});
+                      },
+                    ),
+                  ),
+                  Builder(
+                    builder: (context) {
+                      return ListTile(
+                        title: Text('Get lots of PokeCoins'),
+                        trailing: RaisedButton(
+                          child: Text('POKECOINS'),
                           onPressed: () {
-                            PokeManager.restoreValues();
+                            PokeManager.addCoins(777);
+                            SnackBar snackBar = SnackBar(
+                              content:
+                                  Text('Added 777 PokeCoins to your balance'),
+                              action: SnackBarAction(
+                                label: 'OK',
+                                onPressed: () {},
+                              ),
+                            );
+                            Scaffold.of(context).removeCurrentSnackBar();
+                            Scaffold.of(context).showSnackBar(snackBar);
                           },
                         ),
                       );
-                      Scaffold.of(context).removeCurrentSnackBar();
-                      Scaffold.of(context).showSnackBar(snackBar);
-                    }
-                  },
-                ),
-              );
-            },
-          ),
-          Expanded(child: Container()),
+                    },
+                  ),
+                ],
+              ),
+              Builder(
+                builder: (BuildContext context) {
+                  return ListTile(
+                    title: Text('Reset data'),
+                    trailing: FlatButton(
+                      child: Text('RESET'),
+                      onPressed: () async {
+                        if (await _showDialog(context)) {
+                          PokeManager.saveValues();
+                          PokeManager.resetValues();
+                          SnackBar snackBar = SnackBar(
+                            content: Text('Data resetted successfully'),
+                            action: SnackBarAction(
+                              label: 'UNDO',
+                              onPressed: () {
+                                PokeManager.restoreValues();
+                              },
+                            ),
+                          );
+                          Scaffold.of(context).removeCurrentSnackBar();
+                          Scaffold.of(context).showSnackBar(snackBar);
+                        }
+                      },
+                    ),
+                  );
+                },
+              ),
+            ],
+          )),
+          // ListTile(
+          //   title: Text('Dark Theme'),
+          //   trailing: Switch(
+          //     value: PokeManager.readTheme(),
+          //     onChanged: (value) {
+          //       if (value) {
+          //         _themeChanger.setTheme(ThemeData.dark());
+          //       } else {
+          //         _themeChanger.setTheme(ThemeData(primaryColor: Colors.white));
+          //       }
+          //       PokeManager.writeTheme(value);
+          //     },
+          //   ),
+          // ),
+          // ListTile(
+          //   title: Text('Level up your prestige'),
+          //   trailing: RaisedButton(
+          //       child: Text('PRESTIGE'),
+          //       onPressed: PokeManager.completed
+          //           ? () {
+          //               Navigator.of(context).pushNamed('/win');
+          //             }
+          //           : null),
+          // ),
+          // Divider(),
+          // ListTile(
+          //   title: Text('Tap power'),
+          //   subtitle: Text('Increases by 0.01 every 10 Pokemons caught'),
+          //   trailing: Text(
+          //       '+${(PokeManager.getRawPower() / 100).toStringAsPrecision(2)}'),
+          // ),
+          // ListTile(
+          //   title: Text('Prestige level'),
+          //   subtitle: Text('Each level grants +0.05 tap power'),
+          //   trailing: Text('${PokeManager.prestige}'),
+          // ),
+          // ListTile(
+          //   title: Text('Prestige tap power'),
+          //   trailing: Text(
+          //       '+${(PokeManager.prestige * 5 / 100).toStringAsPrecision(2)}'),
+          // ),
+          // ListTile(
+          //   title: Text('PokeCoins'),
+          //   trailing: Text('${PokeManager.coins}'),
+          // ),
+          // ListTile(
+          //   title: Text('Pokedex'),
+          //   trailing: Text(
+          //       '${PokeManager.caughtPokemons.length}/${PokeManager.pokedex.length}'),
+          // ),
+          //Expanded(child: Container()),
+          // ListTile(
+          //   title: Text('Download all HD animated sprites'),
+          //   trailing: RaisedButton(
+          //       child: Text('DOWNLOAD'),
+          //       onPressed: () {
+          //         PokeManager.pokedex.forEach((pokemon) {
+          //           print('Downloading ${pokemon.name} HD asset');
+          //           var cachedNetworkImage = CachedNetworkImage(
+          //               imageUrl:
+          //                   'https://raw.githubusercontent.com/Nackha1/Hd-sprites/master/${pokemon.name.replaceAll(' ', '_')}.gif');
+          //         });
+          //       }),
+          // ),
+          // ExpansionTile(
+          //   title: Text('Debug'),
+          //   children: <Widget>[
+          //     ListTile(
+          //       title: Text('Complete Pokedex'),
+          //       trailing: RaisedButton(
+          //         child: Text('COMPLETE'),
+          //         onPressed: () {
+          //           PokeManager.caughtPokemons.clear();
+          //           for (var i = 0; i < PokeManager.pokedex.length; i++) {
+          //             PokeManager.caughtPokemons.add(i);
+          //           }
+          //           PokeManager.completedPokedex();
+          //           setState(() {});
+          //         },
+          //       ),
+          //     ),
+          //     Builder(
+          //       builder: (context) {
+          //         return ListTile(
+          //           title: Text('Get lots of PokeCoins'),
+          //           trailing: RaisedButton(
+          //             child: Text('POKECOINS'),
+          //             onPressed: () {
+          //               PokeManager.addCoins(777);
+          //               SnackBar snackBar = SnackBar(
+          //                 content: Text('Added 777 PokeCoins to your balance'),
+          //                 action: SnackBarAction(
+          //                   label: 'OK',
+          //                   onPressed: () {},
+          //                 ),
+          //               );
+          //               Scaffold.of(context).removeCurrentSnackBar();
+          //               Scaffold.of(context).showSnackBar(snackBar);
+          //             },
+          //           ),
+          //         );
+          //       },
+          //     ),
+          //   ],
+          // ),
+          // Builder(
+          //   builder: (BuildContext context) {
+          //     return ListTile(
+          //       title: Text('Reset data'),
+          //       trailing: FlatButton(
+          //         child: Text('RESET'),
+          //         onPressed: () async {
+          //           if (await _showDialog(context)) {
+          //             PokeManager.saveValues();
+          //             PokeManager.resetValues();
+          //             SnackBar snackBar = SnackBar(
+          //               content: Text('Data resetted successfully'),
+          //               action: SnackBarAction(
+          //                 label: 'UNDO',
+          //                 onPressed: () {
+          //                   PokeManager.restoreValues();
+          //                 },
+          //               ),
+          //             );
+          //             Scaffold.of(context).removeCurrentSnackBar();
+          //             Scaffold.of(context).showSnackBar(snackBar);
+          //           }
+          //         },
+          //       ),
+          //     );
+          //   },
+          // ),
           Divider(),
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),

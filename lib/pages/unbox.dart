@@ -20,7 +20,6 @@ class UnboxPage extends StatefulWidget {
 
 class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
   List<int> _tempList;
-  int _count;
   double _tileSize;
   ScrollController _scrollController;
   Animation _rotAnim;
@@ -40,13 +39,11 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
   void dispose() {
     _rotAnimCont.dispose();
     _tapAnimCont.dispose();
-    _save();
     super.dispose();
   }
 
   void _initialize() {
     _tempList = List<int>();
-    _count = 0;
     _scrollController = ScrollController();
 
     _rotAnimCont = AnimationController(
@@ -87,22 +84,16 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
     _rotAnimCont.forward();
   }
 
-  void _save() {
-    _tempList.forEach((item) {
-      PokeManager.addPokemon(item);
-    });
-  }
-
   void _catchRandomPokemon(BuildContext context) {
     int index;
     do {
       index = Random().nextInt(PokeManager.pokedex.length);
     } while (PokeManager.caughtPokemons.contains(index) ||
         _tempList.contains(index));
+    PokeManager.addPokemon(index);
     _tempList.add(index);
-    _count++;
 
-    _scrollController.animateTo((_count - 1) * _tileSize,
+    _scrollController.animateTo((_tempList.length - 1) * _tileSize,
         duration: Duration(milliseconds: 250), curve: Curves.easeInOut);
   }
 
@@ -119,15 +110,15 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
     if (PokeManager.caughtPokemons.length >= PokeManager.pokedex.length) {
       PokeManager.completedPokedex();
       Navigator.of(context).pushNamed('/win');
-    } else if (_count == 0 && !PokeManager.spendCoins(widget.item.cost)) {
+    } else if (_tempList.isEmpty && !PokeManager.spendCoins(widget.item.cost)) {
       _showSnackBar(context,
           "You don't have enough PokeCoins [${PokeManager.coins}/${widget.item.cost}]");
-    } else if (_count < widget.item.pokemons) {
+    } else if (_tempList.length < widget.item.pokemons) {
       _tapAnimCont.reset();
       _tapAnimCont.forward();
       _catchRandomPokemon(context);
     }
-    if (_count == widget.item.pokemons) {
+    if (_tempList.length == widget.item.pokemons) {
       _rotAnimCont.removeStatusListener(_rotStatusList);
       _rotAnimCont.value = 0.5;
     }
@@ -193,31 +184,40 @@ class _UnboxPageState extends State<UnboxPage> with TickerProviderStateMixin {
             ),
           ),
           Expanded(
-            child: Center(
-              child: SizedBox(
-                height: _tileSize,
-                child: GridView.builder(
-                  padding: const EdgeInsets.all(4.0),
-                  controller: _scrollController,
-                  scrollDirection: Axis.horizontal,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1),
-                  itemCount: _tempList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return activePokeTile(
-                        context, PokeManager.pokedex[_tempList[index]]);
-                  },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    '${widget.item.pokemons - _tempList.length} remaining',
+                    style: Theme.of(context).textTheme.title,
+                  ),
                 ),
-              ),
+                SizedBox(
+                  height: _tileSize,
+                  child: GridView.builder(
+                    padding: const EdgeInsets.all(4.0),
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 1),
+                    itemCount: _tempList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return activePokeTile(
+                          context, PokeManager.pokedex[_tempList[index]]);
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
-      floatingActionButton: _count >= widget.item.pokemons
+      floatingActionButton: _tempList.length >= widget.item.pokemons
           ? FloatingActionButton.extended(
               backgroundColor: widget.item.colors[0],
               onPressed: () {
-                _save();
                 _initialize();
               },
               icon: Icon(

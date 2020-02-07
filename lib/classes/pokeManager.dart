@@ -241,17 +241,17 @@ class PokeManager {
   }
 
   static void incrementProgress() {
-    int power = 10 + prestige + (caughtPokemons.length / 10).floor();
+    int power = 10 + (prestige * 5) + (caughtPokemons.length / 10).floor();
     progress += power;
     if (progress >= 100) {
       addCoins(1);
-      progress = 0;
+      progress %= 100;
     }
     _writeProgress();
   }
 
-  static void addPokemon(int pokemon) {
-    caughtPokemons.add(pokemon);
+  static void addPokemon(int index) {
+    caughtPokemons.add(index);
     _writeCaughtPokemons();
   }
 
@@ -302,5 +302,8 @@ class PokeManager {
     _writePrestige();
   }
 
-  static int getPower() => 10 + prestige + (caughtPokemons.length / 10).floor();
+  static int getPower() =>
+      10 + (prestige * 5) + (caughtPokemons.length / 10).floor();
+
+  static int getRawPower() => 10 + (caughtPokemons.length / 10).floor();
 }
