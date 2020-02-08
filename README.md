@@ -1,6 +1,8 @@
 # PokeClicker
 
-A new Flutter project.
+A Pokemon Clicker game developed in Flutter by Piccin Nazareno
+
+[Documentation](https://drive.google.com/file/d/1qRPJLCZ8Vwsj6ZYkK31qviJVsWOSm6yb/view?usp=sharing)
 
 ## Getting Started
 
