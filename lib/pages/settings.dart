@@ -104,7 +104,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 title: Text('Tap power'),
                 subtitle: Text('Increases by 0.01 every 10 Pokemons caught'),
                 trailing: Text(
-                    '+${(PokeManager.getRawPower() / 100).toStringAsPrecision(2)}'),
+                    '+${(PokeManager.getRawPower() / 100).toStringAsFixed(2)}'),
               ),
               ListTile(
                 title: Text('Prestige level'),
@@ -114,7 +114,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ListTile(
                 title: Text('Prestige tap power'),
                 trailing: Text(
-                    '+${(PokeManager.prestige * 5 / 100).toStringAsPrecision(2)}'),
+                    '+${(PokeManager.prestige * 5 / 100).toStringAsFixed(2)}'),
               ),
               ListTile(
                 title: Text('PokeCoins'),
